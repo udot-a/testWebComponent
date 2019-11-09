@@ -200,12 +200,13 @@ class LoginForms extends HTMLElement {
     </div>
 
         `
-        
+        this.shadow.getElementById('registrationForm').onblur = (event) => {
+            event.target.style=''
+        }
        
         this.shadow.getElementById('signup').onclick = (event) => {
             event.target.classList.add('loading-button')
-            console.log('add class')
-            setTimeout(() => event.target.classList.remove('loading-button'), 1000)
+            setTimeout(() => event.target.classList.remove('loading-button'), 500)
             this.shadow.getElementById('registrationForm').style = "top:20%;"
         }
         this.shadow.getElementById('exitbutton').onclick = (event) => {
@@ -299,6 +300,9 @@ class LoginForms extends HTMLElement {
         if (attrName==='avtorize'&&newVal==='true') {
             this.shadow.getElementById('notavtorized').style.display = 'none'
             this.shadow.getElementById('avtorized').style.display = 'block'
+            this.shadow.getElementById('username').innerText = currentUser['firstname']
+            this.shadow.getElementById('useravatar').src = currentUser['user-photo']
+
         }
         else if (attrName==='avtorize'&&newVal==='false'){
             this.shadow.getElementById('notavtorized').style.display = 'block'
