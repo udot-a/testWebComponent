@@ -201,27 +201,40 @@ class LoginForms extends HTMLElement {
 
         `
         this.shadow.getElementById('registrationForm').onblur = (event) => {
-            event.target.style=''
+            event.target.style = ''
         }
-       
+        //    Нажатие кнопки ЗАРЕГИСТРИРОАТЬСЯ
         this.shadow.getElementById('signup').onclick = (event) => {
             event.target.classList.add('loading-button')
             setTimeout(() => event.target.classList.remove('loading-button'), 500)
             this.shadow.getElementById('registrationForm').style = "top:20%;"
+            this.shadow.getElementById('signup').style['pointer-events'] = 'none'
+            this.shadow.getElementById('signin').style['pointer-events'] = 'none'
         }
+        //    Нажатие кнопки ВЫХОД из формы регистрации
         this.shadow.getElementById('exitbutton').onclick = (event) => {
             this.shadow.getElementById('registrationForm').style = ""
+            this.shadow.getElementById('signup').style['pointer-events'] = 'auto'
+            this.shadow.getElementById('signin').style['pointer-events'] = 'auto'
         }
+        // Нажатие кнопки ВОЙТИ    
         this.shadow.getElementById('signin').onclick = (event) => {
             event.target.classList.add('loading-button')
             setTimeout(() => event.target.classList.remove('loading-button'), 500)
             this.shadow.getElementById('logform').style = "top:20%;"
+            this.shadow.getElementById('signup').style['pointer-events'] = 'none'
+            this.shadow.getElementById('signin').style['pointer-events'] = 'none'
         }
+        // Нажатие кнопки LOGOUT    
         this.shadow.getElementById('logout').onclick = (event) => {
             event.target.classList.add('loading-button')
             setTimeout(() => event.target.classList.remove('loading-button'), 500)
+            this.shadow.getElementById('notavtorized').style.display = 'block'
+            this.shadow.getElementById('avtorized').style.display = 'none'
+            document.cookie = "login=; userPass=" +
+                new Date(0).toUTCString()
         }
-        
+
         this.shadow.getElementById('signCancel').onclick = (event) => {
             this.shadow.getElementById('logform').style = ""
         }
@@ -256,21 +269,21 @@ class LoginForms extends HTMLElement {
                 this.shadow.getElementById('userPhoto').value = event.target.result
             }
         }
-        
+
         this.shadow.getElementById('pass1').oninput = function (event) {
             let pass = event.target.value
             event.target.valid = pass.length > 6 && !!pass.match(/\d/) && !!pass.match(/\D/)
             event.target.style.color = event.target.valid ? "green" : "red"
             pass2.disabled = !event.target.valid
         }
-        
+
         this.shadow.getElementById('pass2').oninput = function (event) {
             event.target.valid = event.target.value === pass1.value
             event.target.style.color = event.target.valid ? "green" : "red"
         }
         this.shadow.getElementById('pass2').onchange = function (event) {
             event.target.valid ?
-            this.shadow.getElementById('passHash').value = Sha256.hash(event.target.value) : null
+                this.shadow.getElementById('passHash').value = Sha256.hash(event.target.value) : null
         }
         this.shadow.getElementById('accept').onclick = (event) => {
             let formData = new FormData(registration)
@@ -294,17 +307,16 @@ class LoginForms extends HTMLElement {
         }
     }
     static get observedAttributes() {
-        return [ 'avtorize']
+        return ['avtorize']
     }
-    attributeChangedCallback( attrName, oldVal, newVal ) {
-        if (attrName==='avtorize'&&newVal==='true') {
+    attributeChangedCallback(attrName, oldVal, newVal) {
+        if (attrName === 'avtorize' && newVal === 'true') {
             this.shadow.getElementById('notavtorized').style.display = 'none'
             this.shadow.getElementById('avtorized').style.display = 'block'
             this.shadow.getElementById('username').innerText = currentUser['firstname']
             this.shadow.getElementById('useravatar').src = currentUser['user-photo']
-
         }
-        else if (attrName==='avtorize'&&newVal==='false'){
+        else if (attrName === 'avtorize' && newVal === 'false') {
             this.shadow.getElementById('notavtorized').style.display = 'block'
             this.shadow.getElementById('avtorized').style.display = 'none'
 
