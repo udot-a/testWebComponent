@@ -231,8 +231,11 @@ class LoginForms extends HTMLElement {
             setTimeout(() => event.target.classList.remove('loading-button'), 500)
             this.shadow.getElementById('notavtorized').style.display = 'block'
             this.shadow.getElementById('avtorized').style.display = 'none'
-            document.cookie = "login=; userPass=" +
+            document.cookie = "login=; expires=" +
                 new Date(0).toUTCString()
+            document.cookie = "userPass=; expires=" +
+                new Date(0).toUTCString()
+
         }
 
         this.shadow.getElementById('signCancel').onclick = (event) => {
